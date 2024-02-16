@@ -48,6 +48,7 @@ app.MapPost("/customers", ([FromBody] IEnumerable<Customer> customers, [FromServ
     {
         customerService.ValidateCustomerFields(customer, cachedCustomers);
         customerService.AddCustomerInOrder(customer, cachedCustomers);
+        cache.Set("cachedCustomers", JsonSerializer.SerializeToUtf8Bytes(cachedCustomers));
     }
     return true;
 })
@@ -65,18 +66,5 @@ app.MapGet("/customers", ([FromServices] IDistributedCache cache) =>
 .WithName("GetCustomers")
 .WithOpenApi();
 
-app.Lifetime.ApplicationStopping.Register(() =>
-{
-    OnShutdown();
-});
-
 app.Run();
 
-void OnShutdown()
-{
-    if (cache != null)
-    {
-        var cacheService = (SqliteCache)cache;
-        cacheService.Set("cachedCustomers", JsonSerializer.SerializeToUtf8Bytes(cachedCustomers));
-    }
-}
