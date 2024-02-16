@@ -27,30 +27,28 @@ namespace RiaServer.Services
         public void AddCustomerInOrder(Customer customer, List<Customer> cachedCustomers)
         {
             var customerComparer = new CustomerComparer();
-            lock (cachedCustomers)
+            if (cachedCustomers.Count == 0)
             {
-                if (cachedCustomers.Count == 0)
-                {
-                    cachedCustomers.Add(customer);
-                    return;
-                }
-                var compareToLastInList = customerComparer.Compare(cachedCustomers[cachedCustomers.Count - 1], customer);
-                if (compareToLastInList <= 0)
-                {
-                    cachedCustomers.Add(customer);
-                    return;
-                }
-                var compareToFirstInList = customerComparer.Compare(cachedCustomers[0], customer);
-                if (compareToFirstInList >= 0)
-                {
-                    cachedCustomers.Insert(0, customer);
-                    return;
-                }
-                int index = cachedCustomers.BinarySearch(customer, customerComparer);
-                if (index < 0)
-                    index = ~index;
-                cachedCustomers.Insert(index, customer);
+                cachedCustomers.Add(customer);
+                return;
             }
+            var compareToLastInList = customerComparer.Compare(cachedCustomers[cachedCustomers.Count - 1], customer);
+            if (compareToLastInList <= 0)
+            {
+                cachedCustomers.Add(customer);
+                return;
+            }
+            var compareToFirstInList = customerComparer.Compare(cachedCustomers[0], customer);
+            if (compareToFirstInList >= 0)
+            {
+                cachedCustomers.Insert(0, customer);
+                return;
+            }
+            int index = cachedCustomers.BinarySearch(customer, customerComparer);
+            if (index < 0)
+                index = ~index;
+            cachedCustomers.Insert(index, customer);
+
         }
     }
 }

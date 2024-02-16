@@ -47,8 +47,11 @@ app.MapPost("/customers", ([FromBody] IEnumerable<Customer> customers, [FromServ
     foreach (var customer in customers)
     {
         customerService.ValidateCustomerFields(customer, cachedCustomers);
-        customerService.AddCustomerInOrder(customer, cachedCustomers);
-        cache.Set("cachedCustomers", JsonSerializer.SerializeToUtf8Bytes(cachedCustomers));
+        lock (cachedCustomers)
+        {
+            customerService.AddCustomerInOrder(customer, cachedCustomers);
+            cache.Set("cachedCustomers", JsonSerializer.SerializeToUtf8Bytes(cachedCustomers));
+        }
     }
     return true;
 })
