@@ -1,4 +1,4 @@
-﻿namespace RiaServer.Model
+﻿namespace RiaServer.Models
 {
     public class Customer
     {

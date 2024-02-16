@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiaServer", "RiaServer\RiaServer.csproj", "{21A8B37E-2DD8-4E07-B228-B930A305EF7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiaServer", "RiaServer\RiaServer.csproj", "{21A8B37E-2DD8-4E07-B228-B930A305EF7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerTest", "CustomerTest\CustomerTest.csproj", "{8F8E59FB-7A1A-4BA8-B88B-36F24A6F796C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{21A8B37E-2DD8-4E07-B228-B930A305EF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21A8B37E-2DD8-4E07-B228-B930A305EF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A8B37E-2DD8-4E07-B228-B930A305EF7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F8E59FB-7A1A-4BA8-B88B-36F24A6F796C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8E59FB-7A1A-4BA8-B88B-36F24A6F796C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F8E59FB-7A1A-4BA8-B88B-36F24A6F796C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F8E59FB-7A1A-4BA8-B88B-36F24A6F796C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
