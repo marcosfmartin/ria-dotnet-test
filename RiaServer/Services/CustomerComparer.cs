@@ -11,13 +11,13 @@ namespace RiaServer.Services
                 return 0;
             }
 
-            var compareFirstName = string.Compare(x.FirstName, y.LastName);
+            var compareFirstName = string.Compare(x.FirstName, y.FirstName);
             if (compareFirstName != 0)
             {
                 return compareFirstName;
             }
 
-            var compareLastName = string.Compare(x.FirstName, y.LastName);
+            var compareLastName = string.Compare(x.LastName, y.LastName);
             return compareLastName;
         }
     }
