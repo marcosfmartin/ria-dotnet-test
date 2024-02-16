@@ -1,0 +1,6 @@
+@RiaServer_HostAddress = http://localhost:5286
+
+GET {{RiaServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
