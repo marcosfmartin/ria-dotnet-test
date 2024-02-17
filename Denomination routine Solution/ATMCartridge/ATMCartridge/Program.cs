@@ -80,7 +80,8 @@ int AddNotesAndReduceAmountToSolution(CartridgeFrequency noteFrequency, int targ
 
 List<CartridgeFrequency> GetPossibleNotesByAmount(int amount, int note)
 {
-    //gets possible number of cartridges for a given amount. For example, if the amount is 400 and we are talking about 100 cartridge, we could have at most 4. So resulting array would be [1, 2, 3, 4]
+    //gets possible number of cartridges for a given amount. For example, if the amount is 400 and we are talking about 100 cartridge, we could have at most 4.
+    //So resulting array would be [1, 2, 3, 4]
     var possibleNotes = new List<CartridgeFrequency>();
     for (int i = 1; i <= amount / note; i++)
     {
