@@ -12,46 +12,52 @@ foreach (var inputAmount in inputAmounts)
     List<CartridgeFrequency> possible50 = GetPossibleNotesByAmount(inputAmount, 50);
     List<CartridgeFrequency> possible10 = GetPossibleNotesByAmount(inputAmount, 10);
 
+    //get all combinations involving at least one 100 EUR
     for (int i = 0; i < possible100.Count; i++)
     {
         var numberOfNotes = i + 1;
         var possibleFrequency100 = new CartridgeFrequency { CartridgeValue = 100, Frequency = numberOfNotes };
 
-        var subset50 = GetSubsetOfOtherCartridge(numberOfNotes * 100, possible50, inputAmount);
-        var restOfAmount = inputAmount;
+        var subset50 = GetPossibleSubsetsOfSmallerCartridge(numberOfNotes * 100, possible50, inputAmount);
+        var remainingAmount = inputAmount;
         //get combinations with 50s
         foreach (var subsetElement in subset50)
         {
             possibleSolution = new CartridgeSolution();
-            restOfAmount = AddNotesAndReduceAmountToSolution(subsetElement, inputAmount, possibleSolution);
-            restOfAmount = AddNotesAndReduceAmountToSolution(possibleFrequency100, restOfAmount, possibleSolution);
-            CompleteSolutionWith10s(restOfAmount, possibleSolution);
+            remainingAmount = AddNotesAndReduceAmountToSolution(subsetElement, inputAmount, possibleSolution);
+            remainingAmount = AddNotesAndReduceAmountToSolution(possibleFrequency100, remainingAmount, possibleSolution);
+            CompleteSolutionWith10s(remainingAmount, possibleSolution);
             possibleSolutions.Add(possibleSolution);
         }
 
         //get combination with 100 and 10s
-        (possibleSolution, restOfAmount) = CreateSolutionWithInputFrequencyAndReduceAmount(possibleFrequency100, inputAmount);
-        CompleteSolutionWith10s(restOfAmount, possibleSolution);
+        possibleSolution = new CartridgeSolution();
+        remainingAmount = inputAmount;
+        remainingAmount = AddNotesAndReduceAmountToSolution(possibleFrequency100, remainingAmount, possibleSolution);
+        CompleteSolutionWith10s(remainingAmount, possibleSolution);
         possibleSolutions.Add(possibleSolution);
     }
+
+    //get all combinations involving at least one 50 EUR, but no 100 EUR
     for (int i = 0; i < possible50.Count; i++)
     {
         var numberOfNotes = i + 1;
         var possibleFrequency50 = new CartridgeFrequency { CartridgeValue = 50, Frequency = numberOfNotes };
         possibleSolution = new CartridgeSolution();
-        var restOfAmount = inputAmount;
+        var remainingAmount = inputAmount;
 
-
-        //get combination with 50 and 10s
         possibleSolution = new CartridgeSolution();
-        restOfAmount = AddNotesAndReduceAmountToSolution(possibleFrequency50, restOfAmount, possibleSolution);
-        CompleteSolutionWith10s(restOfAmount, possibleSolution);
+        remainingAmount = AddNotesAndReduceAmountToSolution(possibleFrequency50, remainingAmount, possibleSolution);
+        CompleteSolutionWith10s(remainingAmount, possibleSolution);
         possibleSolutions.Add(possibleSolution);
     }
 
+    //get the one solution which only have 10s.
     possibleSolution = new CartridgeSolution();
     CompleteSolutionWith10s(inputAmount, possibleSolution);
     possibleSolutions.Add(possibleSolution);
+
+
     Console.WriteLine(@$"Possible solutions for {inputAmount}: ");
     PrintPossibleSolutions(possibleSolutions, inputAmount);
     Console.WriteLine();
@@ -60,13 +66,6 @@ foreach (var inputAmount in inputAmounts)
 void CompleteSolutionWith10s(int missingAmount, CartridgeSolution solution)
 {
     if (missingAmount / 10 != 0) solution.PossibleCombination.Add(new CartridgeFrequency { CartridgeValue = 10, Frequency = missingAmount / 10 });
-}
-
-(CartridgeSolution, int) CreateSolutionWithInputFrequencyAndReduceAmount(CartridgeFrequency noteFrequency, int targetAmount)
-{
-    var possibleSolution = new CartridgeSolution();
-    var remainingAmount = AddNotesAndReduceAmountToSolution(noteFrequency, targetAmount, possibleSolution);
-    return (possibleSolution, remainingAmount);
 }
 
 int AddNotesAndReduceAmountToSolution(CartridgeFrequency noteFrequency, int targetAmount, CartridgeSolution solution)
@@ -78,6 +77,7 @@ int AddNotesAndReduceAmountToSolution(CartridgeFrequency noteFrequency, int targ
 
 List<CartridgeFrequency> GetPossibleNotesByAmount(int amount, int note)
 {
+    //gets possible number of cartridges for a given amount. For example, if the amount is 400 and we are talking about 100 cartridge, we could have at most 4. So resulting array would be [1, 2, 3, 4]
     var possibleNotes = new List<CartridgeFrequency>();
     for (int i = 1; i <= amount / note; i++)
     {
@@ -86,12 +86,15 @@ List<CartridgeFrequency> GetPossibleNotesByAmount(int amount, int note)
     return possibleNotes;
 }
 
-List<CartridgeFrequency> GetSubsetOfOtherCartridge(int frequencySumValue, List<CartridgeFrequency> possibleFrequency, int targetAmount)
+List<CartridgeFrequency> GetPossibleSubsetsOfSmallerCartridge(int biggerCartidgeValue, List<CartridgeFrequency> possibleFrequency, int targetAmount)
 {
+    //Given a array like the one described in the above method, gets a subset of this array that makes sense for the amount. Example:
+    //Amount is 300. We have [1,2,3] for 100 cartridge and [1,2,3,4,5,6] for 50 cartridge.
+    //If we are talking about the 2 * 100 case, the possible subset for 50 cartidge is [1,2]. The others would exceed the amount.
     var subset = new List<CartridgeFrequency>();
     foreach (var frequency in possibleFrequency)
     {
-        if (frequencySumValue + (frequency.CartridgeValue * frequency.Frequency) <= targetAmount)
+        if (biggerCartidgeValue + (frequency.CartridgeValue * frequency.Frequency) <= targetAmount)
         {
             subset.Add(frequency);
         }
