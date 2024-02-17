@@ -1,4 +1,4 @@
-# This repository concerns the coding test for Ria Transfer
+# This repository concerns the coding test for Ria Money Transfer
 
 1) ATM Cartridge problem
    This solution is in a Console App project called ATMCartridge. You can just run and it will print all possible solutions for the inputs in the test.
