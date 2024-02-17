@@ -12,7 +12,7 @@ foreach (var inputAmount in inputAmounts)
     List<CartridgeFrequency> possible50 = GetPossibleNotesByAmount(inputAmount, 50);
     List<CartridgeFrequency> possible10 = GetPossibleNotesByAmount(inputAmount, 10);
 
-    //get all combinations involving at least one 100 EUR
+    #region Get All possible combinations involving at least one 100EUR
     for (int i = 0; i < possible100.Count; i++)
     {
         var numberOfNotes = i + 1;
@@ -37,8 +37,9 @@ foreach (var inputAmount in inputAmounts)
         CompleteSolutionWith10s(remainingAmount, possibleSolution);
         possibleSolutions.Add(possibleSolution);
     }
+    #endregion
 
-    //get all combinations involving at least one 50 EUR, but no 100 EUR
+    #region Get all combinations involving at least one 50 EUR, but no 100 EUR
     for (int i = 0; i < possible50.Count; i++)
     {
         var numberOfNotes = i + 1;
@@ -51,11 +52,13 @@ foreach (var inputAmount in inputAmounts)
         CompleteSolutionWith10s(remainingAmount, possibleSolution);
         possibleSolutions.Add(possibleSolution);
     }
+    #endregion
 
-    //get the one solution which only have 10s.
+    #region Get the one solution which only have 10s
     possibleSolution = new CartridgeSolution();
     CompleteSolutionWith10s(inputAmount, possibleSolution);
     possibleSolutions.Add(possibleSolution);
+    #endregion
 
 
     Console.WriteLine(@$"Possible solutions for {inputAmount}: ");
